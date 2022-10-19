@@ -39,4 +39,28 @@ public class DatabaseAdapter extends Database {
 
         return allProductsList;
     }
+
+    public void createUser (String name, String username, String password){
+        String sql = "INSERT INTO users (name, username, password) " +
+                "VALUES ('" + name + "', '" + username + "', '" + password + "')";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.executeUpdate();
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean loginUser(String username, String password){
+        String sql = "SELECT * FROM users WHERE username='"+username+"' AND password='"+password+"'";
+        try (PreparedStatement pst = connection.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                if (username.equals(rs.getString("username"))
+                        && password.equals(rs.getString("password"))) return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 }

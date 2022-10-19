@@ -1,20 +1,23 @@
 package com.example.delivery.controller;
 
+import com.example.delivery.Main;
 import com.example.delivery.controller.menu.ICollection;
 import com.example.delivery.controller.menu.Iterator;
 import com.example.delivery.controller.menu.Menu;
 import com.example.delivery.db.*;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
 public class MenuController {
-    DatabaseAdapter db;
-    public MenuController(DatabaseAdapter db) {
-        this.db = db;
-    }
+    DatabaseAdapter db =  DatabaseAdapter.getInstance();
 
     public Parent createContent() {
         StringBuilder stringBuilder = new StringBuilder();

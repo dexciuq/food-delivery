@@ -1,6 +1,7 @@
 package com.example.delivery.controller;
 
 import com.example.delivery.Main;
+import com.example.delivery.db.DatabaseAdapter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -24,6 +25,8 @@ import org.kordamp.bootstrapfx.BootstrapFX;
 import java.util.Objects;
 
 public class AuthController {
+    DatabaseAdapter db = DatabaseAdapter.getInstance();
+    MenuController menu = new MenuController();
     public Parent createContent(){
         return createContent("Login");
     }
@@ -86,9 +89,10 @@ public class AuthController {
                     actionTarget.setText("Empty username... Try again!");
                 } else if (password.isEmpty()) {
                     actionTarget.setText("Empty password... Try again!");
-                } else if (username.equals("dimok") && password.equals("2004")) {
+                } else if (db.loginUser(username, password)) {
                     actionTarget.setFill(Color.GREEN);
                     actionTarget.setText("Success!");
+                    switchScene(e, menu.createContent());
                 } else {
                     actionTarget.setText("Wrong username or password...");
                 }
@@ -132,8 +136,23 @@ public class AuthController {
         registerBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                String name = nameField.getText();
+                String username = usernameField.getText();
+                String password = passwordField.getText();
+
                 actionTarget.setFill(Color.FIREBRICK);
-                actionTarget.setText("Register button pressed");
+                if (name.isEmpty()) {
+                    actionTarget.setText("Empty name... Try again!");
+                } else if (username.isEmpty()) {
+                    actionTarget.setText("Empty username... Try again!");
+                } else if (password.isEmpty()) {
+                    actionTarget.setText("Empty password... Try again!");
+                } else {
+                    db.createUser(name, username, password);
+                    actionTarget.setFill(Color.GREEN);
+                    actionTarget.setText("Success!");
+                    createContent("Login");
+                }
             }
         });
 

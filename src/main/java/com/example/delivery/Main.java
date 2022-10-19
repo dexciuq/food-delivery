@@ -16,7 +16,6 @@ public class Main extends Application {
         DatabaseAdapter db = DatabaseAdapter.getInstance();
         db.connect();
         AuthController auth = new AuthController();
-        MenuController menu =new MenuController(db);
         Scene scene;
         scene = new Scene(auth.createContent(), 700, 400);
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
