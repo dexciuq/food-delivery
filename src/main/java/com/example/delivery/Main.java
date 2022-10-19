@@ -1,7 +1,6 @@
 package com.example.delivery;
 
 import com.example.delivery.controller.AuthController;
-import com.example.delivery.controller.MenuController;
 import com.example.delivery.db.DatabaseAdapter;
 import javafx.application.Application;
 import javafx.scene.Scene;
