@@ -1,3 +1,10 @@
 * {
     font-family: Arial, sans-serif;
 }
+
+.root {
+    /*-fx-background-image: url('../img/back2.jpg');*/
+    /*-fx-background-size: cover;*/
+    -fx-background-color: papayawhip;
+}
+

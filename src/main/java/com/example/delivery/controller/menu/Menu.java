@@ -25,7 +25,7 @@ public class Menu implements ICollection {
         }
 
         @Override
-        public Object next() {
+        public Product next() {
             if (hasNext()) return menuList.get(index++);
             return null;
         }

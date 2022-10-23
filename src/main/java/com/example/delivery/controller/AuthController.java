@@ -26,7 +26,6 @@ import java.util.Objects;
 
 public class AuthController {
     DatabaseAdapter db = DatabaseAdapter.getInstance();
-    MenuController menu = new MenuController();
     public Parent createContent(){
         return createContent("Login");
     }
@@ -90,6 +89,7 @@ public class AuthController {
                 } else if (password.isEmpty()) {
                     actionTarget.setText("Empty password... Try again!");
                 } else if (db.loginUser(username, password)) {
+                    MenuController menu = new MenuController();
                     actionTarget.setFill(Color.GREEN);
                     actionTarget.setText("Success!");
                     switchScene(e, menu.createContent());
@@ -151,7 +151,7 @@ public class AuthController {
                     db.createUser(name, username, password);
                     actionTarget.setFill(Color.GREEN);
                     actionTarget.setText("Success!");
-                    createContent("Login");
+                    switchScene(event, createContent("Login"));
                 }
             }
         });

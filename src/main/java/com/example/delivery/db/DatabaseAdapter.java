@@ -2,6 +2,7 @@ package com.example.delivery.db;
 
 
 import com.example.delivery.model.Product;
+import com.example.delivery.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,7 +57,13 @@ public class DatabaseAdapter extends Database {
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 if (username.equals(rs.getString("username"))
-                        && password.equals(rs.getString("password"))) return true;
+                        && password.equals(rs.getString("password"))) {
+                    User user = User.getInstance();
+                    user.setName(rs.getString("name"));
+                    user.setUsername(username);
+                    user.setPassword(password);
+                    return true;
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

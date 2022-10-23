@@ -43,10 +43,9 @@ public class Product{
 
     @Override
     public String toString() {
-        return "\nId = " + getProductId()
-                + ", Name: " + getProductName()
-                + ", Price = " + getProductPrice() + "$"
-                + "\nDescription: " + getProductDescription();
+        return  getProductName().toUpperCase()
+                + "\nPrice: " + getProductPrice() + "$"
+                + "\n" + getProductDescription();
     }
 }
 

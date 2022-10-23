@@ -1,7 +1,16 @@
 package com.example.delivery.model;
 
 public class User {
+    private static User instance;
+    public static User getInstance(){
+        if (instance == null) instance = new User();
+        return instance;
+    }
 
+    public static void setNull() {
+        instance = null;
+    }
+    private User() {}
     private Long id;
     private String name;
     private String username;
@@ -9,10 +18,6 @@ public class User {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
