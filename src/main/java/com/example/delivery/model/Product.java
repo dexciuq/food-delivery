@@ -1,18 +1,31 @@
 package com.example.delivery.model;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Product{
     private Long productId;
     private String productName;
     private String productDescription;
     private double productPrice;
+    private String productSrc;
 
-    public Product(Long productId, String productName, String productDescription, double productPrice) {
+    public Product(Long productId, String productName, String productDescription, double productPrice, String productSrc) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
+        this.productSrc = productSrc;
     }
 
+    public String getProductSrc() {
+        return productSrc;
+    }
+    public void setProductSrc(String productSrc) {
+        this.productSrc = productSrc;
+    }
     public Long getProductId() {
         return productId;
     }

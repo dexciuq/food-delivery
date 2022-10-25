@@ -1,6 +1,5 @@
 package com.example.delivery.controller;
 
-import com.example.delivery.Main;
 import com.example.delivery.controller.menu.ICollection;
 import com.example.delivery.controller.menu.Iterator;
 import com.example.delivery.controller.menu.Menu;
@@ -12,14 +11,18 @@ import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
-import javafx.stage.Stage;
-import org.kordamp.bootstrapfx.BootstrapFX;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuController {
-    double total = 0;
-    DatabaseAdapter db =  DatabaseAdapter.getInstance();
+    private final List<Product> products = new ArrayList<>();
+    private double total = 0;
+    private final DatabaseAdapter db =  DatabaseAdapter.getInstance();
+    private final Window window = new Window();
 
     public Parent createContent() {
         VBox box = new VBox(10);
@@ -30,14 +33,22 @@ public class MenuController {
         ICollection menu = new Menu(db.selectAllProducts());
         Iterator iterator = menu.getIterator();
         while (iterator.hasNext()) {
+            HBox vBox = new HBox(10);
             Product item = iterator.next();
+            ImageView imageView = new ImageView(item.getProductSrc());
+            imageView.setFitHeight(50);
+            imageView.setFitWidth(50);
             CheckBox checkBox = new CheckBox(item.toString());
-            box.getChildren().add(checkBox);
+            vBox.getChildren().add(imageView);
+            vBox.getChildren().add(checkBox);
+            box.getChildren().add(vBox);
             checkBox.selectedProperty().addListener(
                     (ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
                         if (new_val) {
+                            products.add(item);
                             total += item.getProductPrice();
                         } else if (old_val) {
+                            products.remove(item);
                             total -= item.getProductPrice();
                         }
                         total = ((double) Math.round(total * 100)) / 100;
@@ -56,13 +67,16 @@ public class MenuController {
         Button orderBtn = new Button("Order");
         orderBtn.getStyleClass().setAll("btn-sm","btn-success");
 
-        exitBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                AuthController authController = new AuthController();
-                User.setNull();
-                switchScene(event, authController.createContent());
-            }
+        orderBtn.setOnAction(event -> {
+            OrderController orderController = new OrderController();
+            orderController.setProducts(products);
+            window.switchScene(event, orderController.createContent());
+        });
+
+        exitBtn.setOnAction(event -> {
+            AuthController authController = new AuthController();
+            User.setNull();
+            window.switchScene(event, authController.createContent());
         });
 
         GridPane gridPane = new GridPane();
@@ -74,20 +88,12 @@ public class MenuController {
         gridPane.add(box, 0, 3);
         gridPane.add(totalString, 1, 4);
         gridPane.add(orderBtn, 0, 5);
+
         return gridPane;
     }
 
     private Text setHeadingThree(Text sceneTitle) {
         sceneTitle.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         return sceneTitle;
-    }
-
-    private void switchScene(ActionEvent event, Parent root) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 700, 400);
-        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-        scene.getStylesheets().add(String.valueOf(Main.class.getResource("assets/css/style.css")));
-        stage.setScene(scene);
-        stage.show();
     }
 }

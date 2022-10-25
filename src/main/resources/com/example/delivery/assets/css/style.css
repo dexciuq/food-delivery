@@ -3,8 +3,37 @@
 }
 
 .root {
-    /*-fx-background-image: url('../img/back2.jpg');*/
-    /*-fx-background-size: cover;*/
+    -fx-background-image: url('../img/back2.jpg');
+    -fx-background-size: cover;
     -fx-background-color: papayawhip;
 }
 
+.vbox {
+    -fx-background-color: white;
+    -fx-background-radius: 7%;
+    -fx-effect: dropshadow(three-pass-box, black, 10, 0.2, 0, 0);
+    -fx-alignment: center;
+    -fx-padding: 20px 20px 10px 20px;
+}
+
+.vbox-padding {
+    -fx-padding: 30px 30px 15px 30px;
+}
+
+.grid {
+    -fx-background-color: white;
+}
+
+.hbox {
+    -fx-padding: 15px;
+}
+
+.white-text {
+    -fx-text-fill: white;
+}
+
+.btn-sm:hover {
+    -fx-background-color: lightsalmon;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+}

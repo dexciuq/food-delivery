@@ -1,31 +1,18 @@
 package com.example.delivery.controller;
 
-import com.example.delivery.Main;
 import com.example.delivery.db.DatabaseAdapter;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.geometry.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import org.kordamp.bootstrapfx.BootstrapFX;
+import javafx.scene.text.*;
 
 import java.util.Objects;
 
 public class AuthController {
     DatabaseAdapter db = DatabaseAdapter.getInstance();
+    Window window = new Window();
     public Parent createContent(){
         return createContent("Login");
     }
@@ -37,15 +24,6 @@ public class AuthController {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         if (Objects.equals(content, "Register")) return createRegisterContent(gridPane);
         return createLoginContent(gridPane);
-    }
-
-    private void switchScene(ActionEvent event, Parent root) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 700, 400);
-        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-        scene.getStylesheets().add(String.valueOf(Main.class.getResource("assets/css/style.css")));
-        stage.setScene(scene);
-        stage.show();
     }
 
     private Parent createLoginContent(GridPane gridPane) {
@@ -70,41 +48,33 @@ public class AuthController {
         horizontalBox.getChildren().add(registerBtn);
         horizontalBox.getChildren().add(btn);
 
-        registerBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                switchScene(event, createContent("Register"));
+        registerBtn.setOnAction(event -> window.switchScene(event, createContent("Register")));
+
+        btn.setOnAction(event -> {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+
+            actionTarget.setFill(Color.FIREBRICK);
+            if (username.isEmpty()) {
+                actionTarget.setText("Empty username... Try again!");
+            } else if (password.isEmpty()) {
+                actionTarget.setText("Empty password... Try again!");
+            } else if (db.loginUser(username, password)) {
+                MenuController menu = new MenuController();
+                actionTarget.setFill(Color.GREEN);
+                actionTarget.setText("Success!");
+                window.switchScene(event, menu.createContent());
+            } else {
+                actionTarget.setText("Wrong username or password...");
             }
         });
 
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = passwordField.getText();
-
-                actionTarget.setFill(Color.FIREBRICK);
-                if (username.isEmpty()) {
-                    actionTarget.setText("Empty username... Try again!");
-                } else if (password.isEmpty()) {
-                    actionTarget.setText("Empty password... Try again!");
-                } else if (db.loginUser(username, password)) {
-                    MenuController menu = new MenuController();
-                    actionTarget.setFill(Color.GREEN);
-                    actionTarget.setText("Success!");
-                    switchScene(e, menu.createContent());
-                } else {
-                    actionTarget.setText("Wrong username or password...");
-                }
-            }
-        });
-        gridPane.add(sceneTitle, 0, 0, 2, 1);
-        gridPane.add(usernameLabel, 0, 1);
-        gridPane.add(usernameField, 1, 1);
-        gridPane.add(passwordLabel, 0, 2);
-        gridPane.add(passwordField, 1, 2);
-        gridPane.add(horizontalBox, 1, 4);
-        gridPane.add(actionTarget, 1, 6);
+        VBox vBox = new VBox(20, usernameLabel, passwordLabel);
+        VBox vBoxFlied = new VBox(10, usernameField, passwordField);
+        HBox hBox = new HBox(10, vBox, vBoxFlied);
+        VBox vBoxResult = new VBox(20, sceneTitle, hBox, horizontalBox, actionTarget);
+        vBoxResult.getStyleClass().add("vbox");
+        gridPane.add(vBoxResult, 0, 0);
         return gridPane;
     }
 
@@ -133,45 +103,34 @@ public class AuthController {
         horizontalBox.getChildren().add(btn);
         horizontalBox.getChildren().add(registerBtn);
 
-        registerBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String name = nameField.getText();
-                String username = usernameField.getText();
-                String password = passwordField.getText();
+        registerBtn.setOnAction(event -> {
+            String name1 = nameField.getText();
+            String username1 = usernameField.getText();
+            String password1 = passwordField.getText();
 
-                actionTarget.setFill(Color.FIREBRICK);
-                if (name.isEmpty()) {
-                    actionTarget.setText("Empty name... Try again!");
-                } else if (username.isEmpty()) {
-                    actionTarget.setText("Empty username... Try again!");
-                } else if (password.isEmpty()) {
-                    actionTarget.setText("Empty password... Try again!");
-                } else {
-                    db.createUser(name, username, password);
-                    actionTarget.setFill(Color.GREEN);
-                    actionTarget.setText("Success!");
-                    switchScene(event, createContent("Login"));
-                }
+            actionTarget.setFill(Color.FIREBRICK);
+            if (name1.isEmpty()) {
+                actionTarget.setText("Empty name... Try again!");
+            } else if (username1.isEmpty()) {
+                actionTarget.setText("Empty username... Try again!");
+            } else if (password1.isEmpty()) {
+                actionTarget.setText("Empty password... Try again!");
+            } else {
+                db.createUser(name1, username1, password1);
+                actionTarget.setFill(Color.GREEN);
+                actionTarget.setText("Success!");
+                window.switchScene(event, createContent("Login"));
             }
         });
 
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                switchScene(event, createContent("Login"));
-            }
-        });
+        btn.setOnAction(event -> window.switchScene(event, createContent("Login")));
 
-        gridPane.add(sceneTitle, 0, 0, 2, 1);
-        gridPane.add(name, 0, 1);
-        gridPane.add(nameField, 1, 1);
-        gridPane.add(username, 0, 2);
-        gridPane.add(usernameField, 1,  2);
-        gridPane.add(password, 0, 3);
-        gridPane.add(passwordField, 1, 3);
-        gridPane.add(horizontalBox, 1, 4);
-        gridPane.add(actionTarget, 1, 6);
+        VBox vBox = new VBox(20, name, username, password);
+        VBox vBoxFlied = new VBox(10, nameField, usernameField, passwordField);
+        HBox hBox = new HBox(10, vBox, vBoxFlied);
+        VBox vBoxResult = new VBox(20, sceneTitle, hBox, horizontalBox, actionTarget);
+        vBoxResult.getStyleClass().add("vbox");
+        gridPane.add(vBoxResult, 0, 0);
 
         return gridPane;
     }
