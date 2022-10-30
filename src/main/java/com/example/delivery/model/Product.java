@@ -1,10 +1,4 @@
 package com.example.delivery.model;
-
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 public class Product{
     private Long productId;
     private String productName;
@@ -59,6 +53,11 @@ public class Product{
         return  getProductName().toUpperCase()
                 + "\nPrice: " + getProductPrice() + "$"
                 + "\n" + getProductDescription();
+    }
+
+    public String toStringForOrder() {
+        return  "\n" +getProductName().toUpperCase()
+                + "\tPrice: " + getProductPrice() + "$";
     }
 }
 

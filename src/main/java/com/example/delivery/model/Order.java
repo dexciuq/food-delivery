@@ -4,53 +4,73 @@ import java.util.Date;
 import java.util.List;
 
 public class Order {
-    private final Long id;
-    private User user;
-    private Date date;
-    private List<Product> productList;
-    private double total;
+    private Long orderId;
+    private Long orderUserId;
+    private String orderDate;
+    private List<Product> orderProducts;
+    private double orderTotal;
 
-    public Long getId() {
-        return id;
+    public Order(Long orderId, Long orderUserId, String orderDate, List<Product> orderProducts, double orderTotal) {
+        this.orderId = orderId;
+        this.orderUserId = orderUserId;
+        this.orderDate = orderDate;
+        this.orderProducts = orderProducts;
+        this.orderTotal = orderTotal;
     }
 
-    public User getUser() {
-        return user;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public Date getDate() {
-        return date;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
-    public List<Product> getProductList() {
-        return productList;
+    public Long getOrderUserId() {
+        return orderUserId;
     }
 
-    public double getTotal() {
-        return total;
+    public void setOrderUserId(Long orderUserId) {
+        this.orderUserId = orderUserId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public String getOrderDate() {
+        return orderDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
+    public List<Product> getOrderProducts() {
+        return orderProducts;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public void setOrderProducts(List<Product> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 
-    public Order(Long id, User user, Date date, List<Product> productList, double total) {
-        this.id = id;
-        this.user = user;
-        this.date = date;
-        this.productList = productList;
-        this.total = total;
+    public double getOrderTotal() {
+        return orderTotal;
+    }
+
+    public void setOrderTotal(double orderTotal) {
+        this.orderTotal = orderTotal;
+    }
+
+    private String getProducts() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Product product: orderProducts) {
+            stringBuilder.append(product.toStringForOrder());
+        }
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Order id: " + orderId + "\n" +
+                "Date: " + orderDate + "\n" +
+                "Products: " + getProducts() + "\n" +
+                "Total: " + orderTotal + "\n";
     }
 }

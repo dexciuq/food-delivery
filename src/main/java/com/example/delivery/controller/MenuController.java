@@ -1,5 +1,6 @@
 package com.example.delivery.controller;
 
+import com.example.delivery.Main;
 import com.example.delivery.controller.menu.ICollection;
 import com.example.delivery.controller.menu.Iterator;
 import com.example.delivery.controller.menu.Menu;
@@ -7,41 +8,49 @@ import com.example.delivery.db.*;
 import com.example.delivery.model.Product;
 import com.example.delivery.model.User;
 import javafx.beans.value.ObservableValue;
-import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MenuController {
-    private final List<Product> products = new ArrayList<>();
+    private final List<Product> products;
+    private final DatabaseAdapter db;
+    private final Window window;
+    private final User user;
     private double total = 0;
-    private final DatabaseAdapter db =  DatabaseAdapter.getInstance();
-    private final Window window = new Window();
+
+    public MenuController() {
+        products = new ArrayList<>();
+        db =  DatabaseAdapter.getInstance();
+        window = new Window();
+        user = User.getInstance();
+    }
 
     public Parent createContent() {
-        VBox box = new VBox(10);
+        // HEADING, PRICE
+        Text menuText = new Text("MENU:");
         Label totalString = new Label("Total: 0.0$");
-        totalString.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        User user = User.getInstance();
+        menuText.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        totalString.setFont(Font.font("Arial", FontWeight.BOLD, 15));
 
+        // MENU
+        VBox menuListBox = new VBox(10);
         ICollection menu = new Menu(db.selectAllProducts());
         Iterator iterator = menu.getIterator();
         while (iterator.hasNext()) {
-            HBox vBox = new HBox(10);
             Product item = iterator.next();
-            ImageView imageView = new ImageView(item.getProductSrc());
+
+            ImageView imageView = new ImageView(String.valueOf(Main.class.getResource("assets/img/" + item.getProductName().toLowerCase() + ".png")));
+            //ImageView imageView = new ImageView(item.getProductSrc());
             imageView.setFitHeight(50);
             imageView.setFitWidth(50);
+
             CheckBox checkBox = new CheckBox(item.toString());
-            vBox.getChildren().add(imageView);
-            vBox.getChildren().add(checkBox);
-            box.getChildren().add(vBox);
             checkBox.selectedProperty().addListener(
                     (ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
                         if (new_val) {
@@ -54,23 +63,37 @@ public class MenuController {
                         total = ((double) Math.round(total * 100)) / 100;
                         totalString.setText("Total: " + total + '$');
                     });
+
+            HBox itemBox = new HBox(10, imageView, checkBox);
+            menuListBox.getChildren().add(itemBox);
         }
-        Text menuText = setHeadingThree(new Text("Menu: "));
-        HBox hBox = new HBox(10);
-        hBox.setAlignment(Pos.TOP_RIGHT);
+
+        // BUTTONS
         Button usernameBtn = new Button(user.getName());
         Button exitBtn = new Button("Exit");
+        Button orderBtn = new Button("Order");
+        Text actionTarget = new Text();
+
         usernameBtn.getStyleClass().setAll("btn-sm","btn-default");
         exitBtn.getStyleClass().setAll("btn-sm","btn-danger");
-        hBox.getChildren().add(usernameBtn);
-        hBox.getChildren().add(exitBtn);
-        Button orderBtn = new Button("Order");
         orderBtn.getStyleClass().setAll("btn-sm","btn-success");
 
+        usernameBtn.setOnAction(event -> {
+            ProfileController profileController = new ProfileController(user);
+            window.switchScene(event, profileController.createContent());
+        });
+
         orderBtn.setOnAction(event -> {
-            OrderController orderController = new OrderController();
-            orderController.setProducts(products);
+            if (total == 0) {
+                actionTarget.setFill(Color.FIREBRICK);
+                actionTarget.setText("First choose product!!");
+                return;
+            }
+            OrderController orderController = new OrderController(products);
             window.switchScene(event, orderController.createContent());
+//
+//            PaymentController paymentController = new PaymentController();
+//            window.switchScene(event, paymentController.createContent());
         });
 
         exitBtn.setOnAction(event -> {
@@ -79,21 +102,24 @@ public class MenuController {
             window.switchScene(event, authController.createContent());
         });
 
+        HBox hBoxBtn = new HBox(10, usernameBtn, exitBtn);
+        HBox hBoxTitle = new HBox(100, menuText, hBoxBtn);
+        hBoxTitle.setAlignment(Pos.CENTER_RIGHT);
+
+
+        // RESULT BOX
+        VBox vBox = new VBox(10, hBoxTitle, menuListBox, totalString, orderBtn, actionTarget);
+        vBox.getStyleClass().addAll("vbox", "menu");
+
+
+        // GRID PANE
         GridPane gridPane = new GridPane();
+        gridPane.add(vBox, 0 , 0);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setPadding(new Insets(10, 25, 25, 25));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(10, 25, 25, 25));
-        gridPane.add(hBox, 1, 0);
-        gridPane.add(menuText, 0, 1);
-        gridPane.add(box, 0, 3);
-        gridPane.add(totalString, 1, 4);
-        gridPane.add(orderBtn, 0, 5);
 
         return gridPane;
-    }
-
-    private Text setHeadingThree(Text sceneTitle) {
-        sceneTitle.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        return sceneTitle;
     }
 }

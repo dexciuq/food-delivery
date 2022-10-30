@@ -10,10 +10,19 @@
 
 .vbox {
     -fx-background-color: white;
-    -fx-background-radius: 7%;
+    -fx-background-radius: 10px;
     -fx-effect: dropshadow(three-pass-box, black, 10, 0.2, 0, 0);
     -fx-alignment: center;
     -fx-padding: 20px 20px 10px 20px;
+}
+
+.menu {
+
+}
+
+.btn-sm{
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
 }
 
 .vbox-padding {
@@ -32,8 +41,15 @@
     -fx-text-fill: white;
 }
 
+/*.btn-sm:hover {*/
+/*    -fx-background-color: lightsalmon;*/
+/*    -fx-border-color: black;*/
+/*    -fx-text-fill: white;*/
+/*}*/
+
+
 .btn-sm:hover {
-    -fx-background-color: lightsalmon;
+    -fx-background-color: darkslategray;
+    -fx-border-color: black;
     -fx-text-fill: white;
-    -fx-border-color: white;
 }
