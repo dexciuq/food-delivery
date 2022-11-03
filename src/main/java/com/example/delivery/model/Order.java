@@ -71,6 +71,6 @@ public class Order {
         return "Order id: " + orderId + "\n" +
                 "Date: " + orderDate + "\n" +
                 "Products: " + getProducts() + "\n" +
-                "Total: " + orderTotal + "\n";
+                "Total: " + orderTotal + "$\n";
     }
 }

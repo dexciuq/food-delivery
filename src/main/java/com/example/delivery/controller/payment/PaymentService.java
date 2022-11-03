@@ -3,6 +3,7 @@ package com.example.delivery.controller.payment;
 public class PaymentService {
     private double cost;
     private final boolean includeDelivery;
+
     private IPaymentStrategy paymentStrategy;
     public IPaymentStrategy getPaymentStrategy() {
         return paymentStrategy;

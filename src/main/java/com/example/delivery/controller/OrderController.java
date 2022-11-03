@@ -65,13 +65,15 @@ public class OrderController {
 
         double finalTotal = total + 15.0;
         confirmBtn.setOnAction(event -> {
-            INotifier notifier = new AlertDecorator(
-                                    new EmailDecorator(
-                                        new PhoneDecorator(new UserNotifier())));
-            notifier.notify("Successfully ordered! Your order will be ready in 45 min.\nThanks for using our service");
-            db.createOrder(date, this.products, finalTotal);
-            MenuController menuController = new MenuController();
-            window.switchScene(event, menuController.createContent());
+            PaymentController paymentController = new PaymentController(finalTotal, date, products);
+            window.switchScene(event, paymentController.createContent());
+//            INotifier notifier = new AlertDecorator(
+//                                    new EmailDecorator(
+//                                        new PhoneDecorator(new UserNotifier())));
+//            notifier.notify("Successfully ordered! Your order will be ready in 45 min.\nThanks for using our service");
+//            db.createOrder(date, this.products, finalTotal);
+//            MenuController menuController = new MenuController();
+//            window.switchScene(event, menuController.createContent());
 //            OrderController orderController = new OrderController();
 //            db.createOrder(date, products, finalTotal);
 //            window.switchScene(event, orderController.createContent());

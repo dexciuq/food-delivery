@@ -120,6 +120,8 @@ public class DatabaseAdapter extends Database {
                     user.setName(rs.getString("name"));
                     user.setUsername(username);
                     user.setPassword(password);
+                    user.setPhoneNumber((rs.getString("phone")));
+                    user.setEmail((rs.getString("email")));
                     return true;
                 }
             }

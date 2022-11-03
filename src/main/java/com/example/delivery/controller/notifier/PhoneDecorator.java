@@ -10,7 +10,7 @@ public class PhoneDecorator extends BaseNotifier {
 
     @Override
     public void notify(String msg) {
-        System.out.println("Message was send to phone number to " + User.getInstance().getUsername() + " by " +
+        System.out.println("Message was send to Phone number to " + User.getInstance().getUsername() + " by " +
                 User.getInstance().getPhoneNumber());
         super.notify(msg);
     }

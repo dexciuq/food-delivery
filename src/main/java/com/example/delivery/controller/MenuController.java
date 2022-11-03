@@ -89,11 +89,9 @@ public class MenuController {
                 actionTarget.setText("First choose product!!");
                 return;
             }
+
             OrderController orderController = new OrderController(products);
             window.switchScene(event, orderController.createContent());
-//
-//            PaymentController paymentController = new PaymentController();
-//            window.switchScene(event, paymentController.createContent());
         });
 
         exitBtn.setOnAction(event -> {
@@ -103,7 +101,7 @@ public class MenuController {
         });
 
         HBox hBoxBtn = new HBox(10, usernameBtn, exitBtn);
-        HBox hBoxTitle = new HBox(100, menuText, hBoxBtn);
+        HBox hBoxTitle = new HBox(80, menuText, hBoxBtn);
         hBoxTitle.setAlignment(Pos.CENTER_RIGHT);
 
 
