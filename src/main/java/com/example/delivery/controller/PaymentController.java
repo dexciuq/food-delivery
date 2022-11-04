@@ -7,10 +7,6 @@ import com.example.delivery.controller.payment.PaymentByCreditCard;
 import com.example.delivery.controller.payment.PaymentByPayPal;
 import com.example.delivery.db.DatabaseAdapter;
 import com.example.delivery.model.Product;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -19,7 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -62,10 +57,6 @@ public class PaymentController {
         imageView.setFitHeight(80);
 
         RadioButton creditCard = new RadioButton("Credit Card");
-//        ImageView creditCardImg = new ImageView(String.valueOf(Main.class.getResource("assets/img/credit-card.png")));
-//        creditCardImg.setFitHeight(80);
-//        creditCardImg.setFitWidth(150);
-//        creditCard.setGraphic(creditCardImg);
         creditCard.setOnAction(event -> {
             label1.setText("Card Number");
             label2.setText("CVV");
@@ -76,10 +67,6 @@ public class PaymentController {
         });
 
         RadioButton payPal = new RadioButton("PayPal");
-//        ImageView payPalImg = new ImageView(String.valueOf(Main.class.getResource("assets/img/pay-pal.png")));
-//        payPalImg.setFitHeight(30);
-//        payPalImg.setFitWidth(70);
-//        payPal.setGraphic(payPalImg);
         payPal.setOnAction((event -> {
             label1.setText("Email");
             label2.setText("Password");
