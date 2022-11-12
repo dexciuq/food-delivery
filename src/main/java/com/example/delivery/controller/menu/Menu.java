@@ -6,11 +6,9 @@ import java.util.List;
 
 public class Menu implements ICollection {
     private final List<Product> menuList;
-
     public Menu(List<Product> menuList) {
         this.menuList = menuList;
     }
-
     @Override
     public Iterator getIterator() {
         return new MenuIterator();

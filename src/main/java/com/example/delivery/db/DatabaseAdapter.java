@@ -144,4 +144,15 @@ public class DatabaseAdapter extends Database {
             throw new RuntimeException(e);
         }
     }
+
+    public void updatePassword(String username, String repeatedPassword) {
+        String sql = "UPDATE users " +
+                "SET password = '" + repeatedPassword + "' " +
+                "WHERE username = '" + username + "'";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.executeUpdate();
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -17,7 +17,7 @@ import java.util.Locale;
 
 
 public class OrderController {
-    private List<Product> products;
+    private final List<Product> products;
     private final DatabaseAdapter db =  DatabaseAdapter.getInstance();
     private final Window window = new Window();
 
@@ -67,16 +67,6 @@ public class OrderController {
         confirmBtn.setOnAction(event -> {
             PaymentController paymentController = new PaymentController(finalTotal, date, products);
             window.switchScene(event, paymentController.createContent());
-//            INotifier notifier = new AlertDecorator(
-//                                    new EmailDecorator(
-//                                        new PhoneDecorator(new UserNotifier())));
-//            notifier.notify("Successfully ordered! Your order will be ready in 45 min.\nThanks for using our service");
-//            db.createOrder(date, this.products, finalTotal);
-//            MenuController menuController = new MenuController();
-//            window.switchScene(event, menuController.createContent());
-//            OrderController orderController = new OrderController();
-//            db.createOrder(date, products, finalTotal);
-//            window.switchScene(event, orderController.createContent());
         });
 
 
@@ -98,13 +88,4 @@ public class OrderController {
         gridPane.add(hBox, 0, 3);
         return gridPane;
     }
-
-    public void setProducts (List<Product> products) {
-        this.products = products;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
 }

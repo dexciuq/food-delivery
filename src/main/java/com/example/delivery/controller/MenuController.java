@@ -33,6 +33,9 @@ public class MenuController {
 
     public Parent createContent() {
         // HEADING, PRICE
+        ImageView menuIcon = new ImageView(String.valueOf(Main.class.getResource("assets/img/menu.png")));
+        menuIcon.setFitHeight(40);
+        menuIcon.setFitWidth(40);
         Text menuText = new Text("MENU:");
         Label totalString = new Label("Total: 0.0$");
         menuText.setFont(Font.font("Arial", FontWeight.BOLD, 15));
@@ -70,6 +73,10 @@ public class MenuController {
 
         // BUTTONS
         Button usernameBtn = new Button(user.getName());
+        ImageView userIcon = new ImageView(String.valueOf(Main.class.getResource("assets/img/user.png")));
+        userIcon.setFitHeight(20);
+        userIcon.setFitWidth(20);
+        usernameBtn.setGraphic(userIcon);
         Button exitBtn = new Button("Exit");
         Button orderBtn = new Button("Order");
         Text actionTarget = new Text();
@@ -100,8 +107,11 @@ public class MenuController {
             window.switchScene(event, authController.createContent());
         });
 
+        HBox menuBox = new HBox(10, menuIcon, menuText);
+        menuBox.setAlignment(Pos.CENTER);
+
         HBox hBoxBtn = new HBox(10, usernameBtn, exitBtn);
-        HBox hBoxTitle = new HBox(80, menuText, hBoxBtn);
+        HBox hBoxTitle = new HBox(80, menuBox, hBoxBtn);
         hBoxTitle.setAlignment(Pos.CENTER_RIGHT);
 
 

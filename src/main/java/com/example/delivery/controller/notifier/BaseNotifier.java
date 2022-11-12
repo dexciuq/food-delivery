@@ -1,6 +1,5 @@
 package com.example.delivery.controller.notifier;
 
-import com.example.delivery.model.User;
 
 public abstract class BaseNotifier implements INotifier {
     private final INotifier wrapped;

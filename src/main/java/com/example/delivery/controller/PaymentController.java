@@ -2,9 +2,7 @@ package com.example.delivery.controller;
 
 import com.example.delivery.Main;
 import com.example.delivery.controller.notifier.*;
-import com.example.delivery.controller.payment.IPaymentStrategy;
-import com.example.delivery.controller.payment.PaymentByCreditCard;
-import com.example.delivery.controller.payment.PaymentByPayPal;
+import com.example.delivery.controller.payment.*;
 import com.example.delivery.db.DatabaseAdapter;
 import com.example.delivery.model.Product;
 import javafx.geometry.Pos;
@@ -114,9 +112,16 @@ public class PaymentController {
             window.switchScene(event, menuController.createContent());
         });
 
+        Button exitBtn = new Button("Exit");
+        exitBtn.getStyleClass().setAll("btn-sm","btn-danger");
+        exitBtn.setOnAction(event -> {
+            MenuController menuController = new MenuController();
+            window.switchScene(event, menuController.createContent());
+        });
+
         VBox vBox = new VBox(10);
         vBox.getStyleClass().addAll("vbox");
-        vBox.getChildren().addAll(vBox1,confirmBtn);
+        vBox.getChildren().addAll(vBox1,confirmBtn, exitBtn);
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);

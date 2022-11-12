@@ -1,9 +1,11 @@
 package com.example.delivery.controller;
 
+import com.example.delivery.Main;
 import com.example.delivery.db.DatabaseAdapter;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
@@ -71,7 +73,7 @@ public class AuthController {
             }
         });
 
-        //
+
         HBox horizontalBox = new HBox(10, registerBtn, btn);
         horizontalBox.setAlignment(Pos.BOTTOM_RIGHT);
         VBox vBox = new VBox(20, usernameLabel, passwordLabel);
